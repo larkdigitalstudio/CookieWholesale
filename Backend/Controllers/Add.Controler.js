@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import User from '../Models/User.Model.js';
 import Product from '../Models/Product.Model.js';
 import logAuditEventAsync from '../Middleware/AuditLog.js';
+import Order from '../Models/Order.Model.js';
 
 // add a customer /  customer registration
 export const addCustomer = async (req, res) => {
@@ -105,4 +106,59 @@ export const addProduct = async (req, res) => {
             {message: error.message}
         )
 }
+};
+
+// add a new order
+export const addOrder = async (req, res) => {
+    try {
+        const { customerId, items } = req.body;
+
+        // Validate customerId exists
+        const customer = await User.findById(customerId);
+        if (!customer) {
+            return res.status(404).json({ message: 'Customer not found.' });
+        }
+
+        // Calculate total price and validate products
+        let totalPrice = 0;
+        for (const item of items) {
+            const product = await Product.findById(item.productId);
+            if (!product) {
+                return res.status(404).json({ message: `Product with ID ${item.productId} not found.` });
+            }
+
+            totalPrice += item.quantity * item.price; // Calculate total price
+        }
+
+        // Create the new order
+        const newOrder = new Order({
+            customerId,
+            items,
+            totalPrice,
+        });
+
+        // Save the order to the database
+        const savedOrder = await newOrder.save();
+
+        // Respond with success
+        res.status(201).json({
+            message: 'Order created successfully.',
+            order: savedOrder,
+        });
+
+        // Log the successful order creation
+        logAuditEventAsync('Add Order', customerId, {
+            message: `Order created for customer ID ${customerId}.`,
+        });
+    } catch (error) {
+        console.error('Error adding order:', error);
+
+        // Respond with error
+        res.status(500).json({ message: 'Internal server error.' });
+
+        // Log the error
+        logAuditEventAsync('Add Order Error', null, {
+            message: error.message,
+        });
+    }
 };
