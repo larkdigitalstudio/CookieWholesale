@@ -1,0 +1,40 @@
+/** Login Page */
+#mainContentLogin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 100dvw;
+    background-color: #fee7d4;
+}
+
+#registerSection{
+    background-color: #fee7d4;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-width: 2000px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+#registerImage{
+    flex: 1 1 500px;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 60px;
+    margin: 20px;
+}
+
+#registerText{
+    flex: 1 1 400px;
+    width: 100%;
+    background-color: #b66b58;
+    border-radius: 60px;
+    padding: 40px;
+    margin: 20px;
+    box-shadow: 0 0 10px #000000;
+    color: #fee7d4;
+    max-width: 800px;
+}

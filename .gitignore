@@ -26,3 +26,5 @@ TestResults.xml
 backend/node_modules/
 #perent node modules
 node_modules/
+#frontend node modulles
+frontend/node_modules/

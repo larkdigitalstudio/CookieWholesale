@@ -1,5 +1,5 @@
 import express from 'express';
-import { addCustomer, addProduct, addOrder } from '../Controllers/Add.Controler.js';
+import { addCustomer, addProduct, addOrder, sendBulkEmail } from '../Controllers/Add.Controler.js';
 
 const router = express.Router();
 
@@ -10,5 +10,7 @@ router.post('/add-customer', addCustomer);
 router.post('/add-product', addProduct);
 //add a new order
 router.post('/add-order', addOrder);
+// send bulk emails to all customers
+router.post('/send-bulk-emails', sendBulkEmail);
 
 export default router;
